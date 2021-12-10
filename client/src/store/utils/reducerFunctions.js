@@ -6,6 +6,8 @@ export const addMessageToStore = (state, payload) => {
       id: message.conversationId,
       otherUser: sender,
       messages: [message],
+      partnerUpToDate: true,
+      userUpToDate: false,
     };
     newConvo.latestMessageText = message.text;
     return [newConvo, ...state];
@@ -17,6 +19,9 @@ export const addMessageToStore = (state, payload) => {
       convoCopy = { ...convo }
       convoCopy.messages = [...convo.messages, message]
       convoCopy.latestMessageText = message.text;
+      console.log({ messageId: message.senderId, partnerId: convo.otherUser.id})
+      convoCopy.partnerUpToDate = convo.otherUser.id === message.senderId
+      convoCopy.userUpToDate = convo.otherUser.id !== message.senderId
       return false;
     } else {
       return true;
@@ -72,13 +77,39 @@ export const addSearchedUsersToStore = (state, users) => {
 export const addNewConvoToStore = (state, recipientId, message) => {
   return state.map((convo) => {
     if (convo.otherUser.id === recipientId) {
-      const convoCopy = { ...convo }
+      const convoCopy = { ...convo };
       convoCopy.id = message.conversationId;
       convoCopy.messages = [message]
       convoCopy.latestMessageText = message.text;
+      convoCopy.partnerUpToDate = false;
+      convoCopy.userUpToDate = true;
       return convoCopy;
     } else {
       return convo;
     }
   });
 };
+
+export const convoWasRead = (state, convoReadId) => {
+  return state.map((convo) => {
+    if (convo.id === convoReadId) {
+      const convoCopy = { ...convo };
+      convoCopy.partnerUpToDate = true;
+      return convoCopy;
+    } else {
+      return convo;
+    }
+  });
+};
+
+export const readAConvo = (state, readConvoId) => {
+  return state.map((convo) => {
+    if (convo.id === readConvoId) {
+      const convoCopy = { ...convo };
+      convoCopy.userUpToDate = true;
+      return convoCopy
+    } else {
+      return convo
+    }
+  })
+}

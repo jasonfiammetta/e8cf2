@@ -5,6 +5,7 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  setReadConvo,
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -108,6 +109,14 @@ export const postMessage = (body) => async (dispatch) => {
     console.error(error);
   }
 };
+
+export const readConvo = (convoId, userId) => async (dispatch) => {
+  if(convoId && userId) {
+    console.log('emitting readConvo', convoId);
+    socket.emit("read-convo", convoId, userId);
+  }
+  dispatch(setReadConvo(convoId));
+}
 
 export const searchUsers = (searchTerm) => async (dispatch) => {
   try {
