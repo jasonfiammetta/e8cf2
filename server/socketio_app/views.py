@@ -4,7 +4,7 @@ import os
 
 import socketio
 from online_users import online_users
-# from messenger_backend.models import Message
+from messenger_backend.models import Message
 
 basedir = os.path.dirname(os.path.realpath(__file__))
 sio = socketio.Server(async_mode=async_mode, logger=False)
@@ -36,10 +36,9 @@ def new_message(sid, message):
 @sio.on("read-convo")
 def read_convo(sid, convo_id, user_id):
     print("user", user_id, "read convo", convo_id, "emitting convo-read")
-    # Message.read_conversation(convo_id, user_id)
+    Message.read_conversation(convo_id, user_id)
     sio.emit(
         "convo-read",
-        # {"convo-read": convo_id},
         convo_id,
         skip_sid=sid
     )
