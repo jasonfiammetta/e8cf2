@@ -1,4 +1,5 @@
 import {
+  createConversations,
   addNewConvoToStore,
   addOnlineUserToStore,
   addSearchedUsersToStore,
@@ -91,7 +92,7 @@ export const setReadConvo = (convoId) => {
 const reducer = (state = [], action) => {
   switch (action.type) {
     case GET_CONVERSATIONS:
-      return action.conversations;
+      return createConversations(state, action.conversations);
     case SET_MESSAGE:
       return addMessageToStore(state, action.payload);
     case ADD_ONLINE_USER: {
@@ -110,12 +111,10 @@ const reducer = (state = [], action) => {
         action.payload.recipientId,
         action.payload.newMessage
       );
-    case CONVO_READ: {
-      return convoWasRead(state, action.convoId)
-    }
-    case READ_CONVO: {
-      return readAConvo(state, action.convoId)
-    }
+    case CONVO_READ:
+      return convoWasRead(state, action.convoId);
+    case READ_CONVO:
+      return readAConvo(state, action.convoId);
     default:
       return state;
   }

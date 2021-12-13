@@ -35,7 +35,7 @@ const ChatContent = (props) => {
         <Typography className={classes.previewText}>
           {latestMessageText}
         </Typography>
-        <Chip color='primary' label={conversation.userUpToDate ? 'read' : 'unread'} />
+        <Chip color='primary' label={conversation.userUnreadMessages || ''} />
       </Box>
     </Box>
   );

@@ -112,7 +112,7 @@ export const postMessage = (body) => async (dispatch) => {
 
 export const readConvo = (convoId, userId) => async (dispatch) => {
   if(convoId && userId) {
-    console.log('emitting readConvo', convoId);
+    console.log('emitting readConvo', convoId, 'as user', userId);
     socket.emit("read-convo", convoId, userId);
   }
   dispatch(setReadConvo(convoId));
