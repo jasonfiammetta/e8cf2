@@ -26,7 +26,6 @@ def go_online(sid, user_id):
 
 @sio.on("new-message")
 def new_message(sid, message):
-    print('new-message on socket', sid, message)
     sio.emit(
         "new-message",
         {"message": message["message"], "sender": message["sender"]},
@@ -35,7 +34,6 @@ def new_message(sid, message):
 
 @sio.on("read-convo")
 def read_convo(sid, convo_id, user_id):
-    print("user", user_id, "read convo", convo_id, "emitting convo-read")
     Message.read_conversation(convo_id, user_id)
     sio.emit(
         "convo-read",
