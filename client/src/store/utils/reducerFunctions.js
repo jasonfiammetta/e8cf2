@@ -1,5 +1,4 @@
 export const createConversations = (state, conversations) => {
-  console.log(conversations)
   if(!conversations) { return [] }
   return conversations.map(convo => {
     let userUnread = 0;
@@ -11,7 +10,6 @@ export const createConversations = (state, conversations) => {
           userUnread++ : partnerUnread++
       }
     });
-
     convo.userUnreadMessages = userUnread
     convo.partnerUnreadMessages = partnerUnread
     return convo
@@ -35,21 +33,21 @@ export const addMessageToStore = (state, payload) => {
   };
 
   let convoCopy = {};
-  const remainingState = state.filter((convo) => {
+  const remainingState = state.filter(convo => {
     if (convo.id === message.conversationId) {
       convoCopy = { ...convo }
+      const userSent = convo.otherUser.id !== message.senderId
       convoCopy.messages = [...convo.messages, message]
       convoCopy.latestMessageText = message.text;
-      console.log({ messageId: message.senderId, partnerId: convo.otherUser.id})
-      convoCopy.partnerUnreadMessages = convo.otherUser.id === message.senderId ? convo.partnerUnreadMessages + 1 : 0
-      convoCopy.userUnreadMessages = convo.otherUser.id !== message.senderId ? 0 : convo.userUnreadMessages + 1
+      convoCopy.partnerUnreadMessages = userSent ? convo.partnerUnreadMessages + 1 : 0
+      convoCopy.userUnreadMessages = userSent ? 0 : convo.userUnreadMessages + 1
       return false;
     } else {
       return true;
     }
   });
-  if(state.length === remainingState.length) { return remainingState }
-  return [convoCopy, ...remainingState]
+  if(state.length === remainingState.length) { return remainingState };
+  return [convoCopy, ...remainingState];
 };
 
 export const addOnlineUserToStore = (state, id) => {

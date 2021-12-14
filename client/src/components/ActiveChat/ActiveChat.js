@@ -32,6 +32,9 @@ const ActiveChat = (props) => {
     }
   }
 
+  const readMessage = conversation.messages && conversation.messages.slice().reverse()[conversation.partnerUnreadMessages]
+  const lastPartnerRead = readMessage && readMessage.id
+
   return (
     <Box className={classes.root}>
       {conversation.otherUser && (
@@ -43,8 +46,9 @@ const ActiveChat = (props) => {
           <Box onClick={handleClick} className={classes.chatContainer}>
             <Messages
               messages={conversation.messages}
+              lastPartnerRead={lastPartnerRead}
               otherUser={conversation.otherUser}
-              userId={user.id}
+              user={user}
             />
             <Input
               otherUser={conversation.otherUser}

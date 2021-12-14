@@ -25,7 +25,6 @@ socket.on("connect", () => {
   });
 
   socket.on("convo-read", (convoId) => {
-    console.log('convo has been read', convoId)
     store.dispatch(convoRead(convoId))
   })
 
