@@ -22,6 +22,7 @@ export const addMessageToStore = (state, payload) => {
       return true;
     }
   });
+  if(state.length === remainingState.length) { return remainingState }
   return [convoCopy, ...remainingState]
 };
 
