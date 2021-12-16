@@ -33,7 +33,7 @@ const ActiveChat = (props) => {
   }
 
   const lastReadIdx = conversation?.messages?.length - 1 - conversation?.partnerUnreadMessages;
-  const lastPartnerRead = conversation.messages && conversation.messages[lastReadIdx].id
+  const lastPartnerRead = conversation.messages && conversation.messages[lastReadIdx]?.id
 
   return (
     <Box className={classes.root}>
