@@ -50,4 +50,18 @@ class Messages(APIView):
             return HttpResponse(status=500)
 
 
-    # def patch(self, request): # patch with read?
+    def patch(self, request):
+        try:
+            user = get_user(request)
+
+            if user.is_anonymous:
+                return HttpResponse(status=401)
+
+            body = request.data
+            convo_id = body.get("convoId")
+            Message.read_conversation(convo_id, user.id)
+
+            return HttpResponse(status=204)
+
+        except Exception as e:
+            return HttpResponse(status=500)

@@ -4,7 +4,6 @@ import os
 
 import socketio
 from online_users import online_users
-from messenger_backend.models import Message
 
 basedir = os.path.dirname(os.path.realpath(__file__))
 sio = socketio.Server(async_mode=async_mode, logger=False)
@@ -13,7 +12,6 @@ thread = None
 
 @sio.event
 def connect(sid, environ):
-    print('connected', sid)
     sio.emit("my_response", {"data": "Connected", "count": 0}, room=sid)
 
 
@@ -33,8 +31,7 @@ def new_message(sid, message):
     )
 
 @sio.on("read-convo")
-def read_convo(sid, convo_id, user_id):
-    Message.read_conversation(convo_id, user_id)
+def read_convo(sid, convo_id):
     sio.emit(
         "convo-read",
         convo_id,

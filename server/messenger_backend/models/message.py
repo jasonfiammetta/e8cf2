@@ -24,6 +24,8 @@ class Message(utils.CustomModel):
         try:
             conversation =  Conversation.objects.get(id=conversation_id)
             messages = Message.objects.filter(conversation=conversation)
+            #do bulk update instead
+            #messages.filter(sender_id=user_id).set(read=True) ?
             for m in messages.all():
                 if m.senderId is not user_id:
                     m.read = True

@@ -110,11 +110,20 @@ export const postMessage = (body) => async (dispatch) => {
   }
 };
 
+const saveRead = async (convoId) => {
+  await axios.patch("/api/messages", { convoId });
+};
+
 export const readConvo = (convoId, userId) => async (dispatch) => {
-  if(convoId && userId) {
-    socket.emit("read-convo", convoId, userId);
+  if(!(convoId && userId)) { return; };
+  try {
+    await saveRead(convoId, userId);
+    socket.emit("read-convo", convoId);
+    dispatch(setReadConvo(convoId));
+  } catch (error) {
+    console.error(error);
   }
-  dispatch(setReadConvo(convoId));
+
 }
 
 export const searchUsers = (searchTerm) => async (dispatch) => {
