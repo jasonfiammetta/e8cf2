@@ -32,8 +32,8 @@ const ActiveChat = (props) => {
     }
   }
 
-  const readMessage = conversation.messages && conversation.messages.slice().reverse()[conversation.partnerUnreadMessages]
-  const lastPartnerRead = readMessage && readMessage.id
+  const lastReadIdx = conversation?.messages?.length - 1 - conversation?.partnerUnreadMessages;
+  const lastPartnerRead = conversation.messages && conversation.messages[lastReadIdx].id
 
   return (
     <Box className={classes.root}>
