@@ -12,6 +12,12 @@ const useStyles = makeStyles(() => ({
     marginRight: 11,
     marginTop: 6
   },
+  seenAvatar: {
+    height: 15,
+    width: 15,
+    marginLeft: 6,
+    marginTop: 6
+  },
   usernameDate: {
     fontSize: 11,
     color: "#BECCE2",
@@ -36,7 +42,7 @@ const OtherUserBubble = (props) => {
   const { text, time, otherUser } = props;
   return (
     <Box className={classes.root}>
-      <Avatar alt={otherUser.username} src={otherUser.photoUrl} className={classes.avatar}></Avatar>
+      <Avatar alt={otherUser.username} src={otherUser.photoUrl} className={classes.avatar}/>
       <Box>
         <Typography className={classes.usernameDate}>
           {otherUser.username} {time}

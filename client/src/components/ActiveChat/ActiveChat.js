@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import { Input, Header, Messages } from "./index";
+import { readConvo } from "../../store/utils/thunkCreators";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles(() => ({
@@ -25,6 +26,15 @@ const ActiveChat = (props) => {
   const { user } = props;
   const conversation = props.conversation || {};
 
+  const handleClick = async () => {
+    if(conversation.userUnreadMessages !== 0) {
+      await props.readConvo(conversation.id, user.id);
+    }
+  }
+
+  const lastReadIdx = conversation?.messages?.length - 1 - conversation?.partnerUnreadMessages;
+  const lastPartnerRead = conversation.messages && conversation.messages[lastReadIdx]?.id
+
   return (
     <Box className={classes.root}>
       {conversation.otherUser && (
@@ -33,11 +43,12 @@ const ActiveChat = (props) => {
             username={conversation.otherUser.username}
             online={conversation.otherUser.online || false}
           />
-          <Box className={classes.chatContainer}>
+          <Box onClick={handleClick} className={classes.chatContainer}>
             <Messages
               messages={conversation.messages}
+              lastPartnerRead={lastPartnerRead}
               otherUser={conversation.otherUser}
-              userId={user.id}
+              user={user}
             />
             <Input
               otherUser={conversation.otherUser}
@@ -62,4 +73,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(ActiveChat);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    readConvo: (convoId, userId) => {
+      dispatch(readConvo(convoId, userId));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActiveChat);
