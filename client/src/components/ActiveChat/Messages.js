@@ -23,8 +23,7 @@ const Messages = (props) => {
             key={message.id}
             text={message.text}
             time={time}
-            otherUser={otherUser}
-            lastRead={message.id === lastPartnerRead} />
+            otherUser={otherUser} />
         );
       })}
     </Box>
